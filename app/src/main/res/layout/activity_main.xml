@@ -16,12 +16,109 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"/>
+            android:text="两种请求"/>
 
-        <Button
-            android:id="@+id/btn_test"
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/btn_enqueue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="异步请求"/>
+
+                <Button
+                    android:id="@+id/btn_execute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="同步请求"/>
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="text"/>
+            android:text="注解使用"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/btn_http"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@HTTP"/>
+
+                <Button
+                    android:id="@+id/btn_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Url"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btn_streaming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Streaming"
+                    android:textAllCaps="false"/>
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/btn_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Path"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btn_query_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@QueryMap"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btn_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Body"
+                    android:textAllCaps="false"/>
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/btn_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Field"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btn_part"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Part"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btn_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@Header"
+                    android:textAllCaps="false"/>
+            </TableRow>
+        </TableLayout>
+
     </LinearLayout>
 </layout>

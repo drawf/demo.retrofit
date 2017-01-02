@@ -144,7 +144,8 @@ public class LogUtils {
         String message = generateMessage(o) + SEPARATOR + trace;
 
         if (tr != null) {
-            message += "\n" + Log.getStackTraceString(tr);
+            message += "\n" + tr.getMessage();
+//            message += "\n" + Log.getStackTraceString(tr);
         }
 
         switch (level) {
