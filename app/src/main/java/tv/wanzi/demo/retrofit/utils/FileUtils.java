@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,14 +39,9 @@ public class FileUtils {
 
         File filesDir = context.getExternalFilesDir(null);///storage/sdcard0/Android/data/PackageName/files
         File destFile = new File(filesDir, filePath);
+        Files.createParentDirs(destFile);
 
         if (!destFile.exists()) {
-            if (filePath.contains(".")) {// TODO: drawf 17/1/3 need refactor
-                destFile.getParentFile().mkdirs();
-            } else {
-                destFile.mkdirs();
-            }
-
             InputStream inputStream = context.getAssets().open(filePath);
             FileOutputStream outputStream = new FileOutputStream(destFile);
             ByteStreams.copy(inputStream, outputStream);
