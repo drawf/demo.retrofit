@@ -13,7 +13,7 @@ import tv.wanzi.demo.retrofit.MyApplication;
  * ------------------------------
  */
 public class ToastUtils {
-    private static Context sContext = MyApplication.getInstance();
+    private static Context sContext = MyApplication.getContext();
     private static Handler sHandler = new Handler(Looper.getMainLooper());
     private static Toast sToast;
 

@@ -1,6 +1,7 @@
 package tv.wanzi.demo.retrofit;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.io.IOException;
 
@@ -14,18 +15,21 @@ import tv.wanzi.demo.retrofit.utils.LogUtils;
 
 public class MyApplication extends Application {
     private static MyApplication sInstance;
-
-    public MyApplication() {
-        sInstance = this;
-    }
+    private static Context sContext;
 
     public static MyApplication getInstance() {
         return sInstance;
     }
 
+    public static Context getContext() {
+        return sContext;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        sInstance = this;
+        sContext = this.getApplicationContext();
         init();
     }
 

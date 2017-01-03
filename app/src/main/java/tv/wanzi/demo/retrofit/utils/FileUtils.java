@@ -1,5 +1,6 @@
 package tv.wanzi.demo.retrofit.utils;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.google.common.io.ByteStreams;
@@ -33,13 +34,13 @@ public class FileUtils {
      */
     public static File copyAsset2EFD(String filePath) throws IOException {
         if (!hasSDCardMounted()) return null;
-        MyApplication context = MyApplication.getInstance();
+        Context context = MyApplication.getContext();
 
         File filesDir = context.getExternalFilesDir(null);///storage/sdcard0/Android/data/PackageName/files
         File destFile = new File(filesDir, filePath);
 
         if (!destFile.exists()) {
-            if (filePath.contains(".")) {
+            if (filePath.contains(".")) {// TODO: drawf 17/1/3 need refactor
                 destFile.getParentFile().mkdirs();
             } else {
                 destFile.mkdirs();
@@ -64,7 +65,7 @@ public class FileUtils {
      */
     public static File getEFDFile(String filePath) {
         if (!hasSDCardMounted()) return null;
-        MyApplication context = MyApplication.getInstance();
+        Context context = MyApplication.getContext();
 
         File filesDir = context.getExternalFilesDir(null);///storage/sdcard0/Android/data/PackageName/files
         File destFile = new File(filesDir, filePath);
