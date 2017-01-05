@@ -23,6 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import tv.wanzi.demo.retrofit.R;
 import tv.wanzi.demo.retrofit.api.MovieService;
+import tv.wanzi.demo.retrofit.converter.string.StringConverterFactory;
 import tv.wanzi.demo.retrofit.databinding.ActivityMainBinding;
 import tv.wanzi.demo.retrofit.entity.User;
 import tv.wanzi.demo.retrofit.utils.FileUtils;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MovieService.BASE_URL)
+                .addConverterFactory(StringConverterFactory.create())//都支持的类型优先使用第一个
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mMovieService = retrofit.create(MovieService.class);
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.btnField.setOnClickListener(this);
         mBinding.btnPart.setOnClickListener(this);
         mBinding.btnHeader.setOnClickListener(this);
+
+        mBinding.btnStringConverter.setOnClickListener(this);
 
     }
 
@@ -100,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_header:
                 header();
+                break;
+            case R.id.btn_string_converter:
+                stringConverter();
                 break;
         }
         ToastUtils.show("快去看log");
@@ -318,6 +325,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                LogUtils.i("failure", t);
+            }
+        });
+    }
+
+    private void stringConverter() {
+        Call<String> call = mMovieService.testStringConverter(0, 2);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                LogUtils.i("StringConverter：" + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
                 LogUtils.i("failure", t);
             }
         });

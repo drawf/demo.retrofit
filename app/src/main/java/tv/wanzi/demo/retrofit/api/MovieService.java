@@ -86,4 +86,7 @@ public interface MovieService {
     })
     @GET("top250")
     Call<JsonObject> testHeader(@Header("token") String token, @Query("start") int start, @Query("count") int count);
+
+    @GET("top250")
+    Call<String> testStringConverter(@Query("start") int start, @Query("count") int count);
 }

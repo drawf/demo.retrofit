@@ -129,7 +129,7 @@ public class LogUtils {
         String message = String.valueOf(object);
         message = CharMatcher.anyOf("\r\n").replaceFrom(message, " ");
 
-        if (!STRICT && message.length() >= MESSAGE_MAX_LEN) {
+        if (message.length() >= MESSAGE_MAX_LEN) {
             message = message.substring(0, MESSAGE_MAX_LEN) + "§";
         }
 
