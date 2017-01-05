@@ -13,11 +13,11 @@ import tv.wanzi.demo.retrofit.utils.LogUtils;
  * ------------------------------
  */
 
-public class MyApplication extends Application {
-    private static MyApplication sInstance;
+public class MainApplication extends Application {
+    private static MainApplication sInstance;
     private static Context sContext;
 
-    public static MyApplication getInstance() {
+    public static MainApplication getInstance() {
         return sInstance;
     }
 
@@ -35,7 +35,7 @@ public class MyApplication extends Application {
 
     private void init() {
         try {
-            FileUtils.copyAsset2EFD("image/abc.jpg");
+            FileUtils.copyAssetFile2EFD("image/abc.jpg");
         } catch (IOException e) {
             LogUtils.e(e);
         }

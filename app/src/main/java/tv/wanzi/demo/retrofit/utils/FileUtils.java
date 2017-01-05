@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import tv.wanzi.demo.retrofit.MyApplication;
+import tv.wanzi.demo.retrofit.MainApplication;
 
 /**
  * Created by drawf on 17/1/2.
@@ -21,8 +21,7 @@ import tv.wanzi.demo.retrofit.MyApplication;
 public class FileUtils {
 
     public static boolean hasSDCardMounted() {
-        String state = Environment.getExternalStorageState();
-        return state != null && state.equals(Environment.MEDIA_MOUNTED);
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
 
@@ -33,9 +32,9 @@ public class FileUtils {
      * @return 拷贝后的File对象
      * @throws IOException
      */
-    public static File copyAsset2EFD(String filePath) throws IOException {
+    public static File copyAssetFile2EFD(String filePath) throws IOException {
         if (!hasSDCardMounted()) return null;
-        Context context = MyApplication.getContext();
+        Context context = MainApplication.getContext();
 
         File filesDir = context.getExternalFilesDir(null);///storage/sdcard0/Android/data/PackageName/files
         File destFile = new File(filesDir, filePath);
@@ -61,7 +60,7 @@ public class FileUtils {
      */
     public static File getEFDFile(String filePath) {
         if (!hasSDCardMounted()) return null;
-        Context context = MyApplication.getContext();
+        Context context = MainApplication.getContext();
 
         File filesDir = context.getExternalFilesDir(null);///storage/sdcard0/Android/data/PackageName/files
         File destFile = new File(filesDir, filePath);

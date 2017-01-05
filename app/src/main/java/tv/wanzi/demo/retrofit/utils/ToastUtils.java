@@ -6,14 +6,14 @@ import android.os.Looper;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import tv.wanzi.demo.retrofit.MyApplication;
+import tv.wanzi.demo.retrofit.MainApplication;
 
 /**
  * Created by drawf on 17/1/1.
  * ------------------------------
  */
 public class ToastUtils {
-    private static Context sContext = MyApplication.getContext();
+    private static Context sContext = MainApplication.getContext();
     private static Handler sHandler = new Handler(Looper.getMainLooper());
     private static Toast sToast;
 
