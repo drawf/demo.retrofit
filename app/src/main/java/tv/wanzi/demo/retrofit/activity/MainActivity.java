@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mBinding.btnStringConverter.setOnClickListener(this);
 
+        mBinding.btnTestMap.setOnClickListener(this);
+        mBinding.btnTestList.setOnClickListener(this);
+
     }
 
     @Override
@@ -107,6 +112,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_string_converter:
                 stringConverter();
+                break;
+            case R.id.btn_test_map:
+                testMap();
+                break;
+            case R.id.btn_test_list:
+                testList();
                 break;
         }
         ToastUtils.show("快去看log");
@@ -335,11 +346,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                LogUtils.i("StringConverter：" + response.body());
+                LogUtils.i("StringResponseBodyConverter：" + response.body());
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                LogUtils.i("failure", t);
+            }
+        });
+    }
+
+    private void testMap() {
+        Call<Map<String, Object>> call = mMovieService.testMap(0, 2);
+        call.enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Map<String, Object> body = response.body();
+                LogUtils.i("Test Map：" + body);
+                LogUtils.i("Test Map：" + body.get("title"));
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                LogUtils.i("failure", t);
+            }
+        });
+    }
+
+    private void testList() {
+        Call<List<Map<String, Object>>> call = mMovieService.testList("https://movie.douban.com/j/cinemas/?city_id=108288&limit=5", 0, 2);
+        call.enqueue(new Callback<List<Map<String, Object>>>() {
+            @Override
+            public void onResponse(Call<List<Map<String, Object>>> call, Response<List<Map<String, Object>>> response) {
+                List<Map<String, Object>> body = response.body();
+                LogUtils.i("Test List：" + body);
+                LogUtils.i("Test List：" + body.get(0));
+            }
+
+            @Override
+            public void onFailure(Call<List<Map<String, Object>>> call, Throwable t) {
                 LogUtils.i("failure", t);
             }
         });

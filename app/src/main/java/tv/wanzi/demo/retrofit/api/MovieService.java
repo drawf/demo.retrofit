@@ -2,6 +2,7 @@ package tv.wanzi.demo.retrofit.api;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -89,4 +90,11 @@ public interface MovieService {
 
     @GET("top250")
     Call<String> testStringConverter(@Query("start") int start, @Query("count") int count);
+
+    @GET("top250")
+    Call<Map<String, Object>> testMap(@Query("start") int start, @Query("count") int count);
+
+    @GET
+    Call<List<Map<String, Object>>> testList(@Url String url, @Query("start") int start, @Query("count") int count);
+
 }

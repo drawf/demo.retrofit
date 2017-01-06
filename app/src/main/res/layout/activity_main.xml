@@ -139,5 +139,33 @@
             </TableRow>
 
         </TableLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用GsonConverter返回Map、List" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/btn_test_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test Map"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btn_test_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test List"
+                    android:textAllCaps="false" />
+            </TableRow>
+
+        </TableLayout>
     </LinearLayout>
 </layout>

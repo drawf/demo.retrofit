@@ -21,9 +21,9 @@ public class StringConverterFactory extends Converter.Factory {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         if (type == String.class) {
-            return new StringConverter();
+            return new StringResponseBodyConverter();
         }
-        return null;
+        return null;//不能处理就返回null
     }
 
 }
