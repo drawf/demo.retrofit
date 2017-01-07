@@ -24,6 +24,7 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
+import tv.wanzi.demo.retrofit.adapter.custom.CustomCallAdapterFactory;
 import tv.wanzi.demo.retrofit.entity.User;
 
 /**
@@ -90,6 +91,9 @@ public interface MovieService {
 
     @GET("top250")
     Call<String> testStringConverter(@Query("start") int start, @Query("count") int count);
+
+    @GET("top250")
+    CustomCallAdapterFactory.CustomCall<String> testCustomCallAdapter(@Query("start") int start, @Query("count") int count);
 
     @GET("top250")
     Call<Map<String, Object>> testMap(@Query("start") int start, @Query("count") int count);

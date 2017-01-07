@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="tv.wanzi.demo.retrofit.activity.MainActivity">
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="tv.wanzi.demo.retrofit.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="两种请求" />
+            android:text="两种请求"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -27,13 +27,13 @@
                     android:id="@+id/btn_enqueue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="异步请求" />
+                    android:text="异步请求"/>
 
                 <Button
                     android:id="@+id/btn_execute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="同步请求" />
+                    android:text="同步请求"/>
             </TableRow>
 
         </TableLayout>
@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注解使用" />
+            android:text="注解使用"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -53,21 +53,21 @@
                     android:id="@+id/btn_http"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\@HTTP" />
+                    android:text="\@HTTP"/>
 
                 <Button
                     android:id="@+id/btn_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Url"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/btn_streaming"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Streaming"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
             </TableRow>
 
             <TableRow>
@@ -77,21 +77,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Path"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/btn_query_map"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@QueryMap"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/btn_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Body"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
             </TableRow>
 
             <TableRow>
@@ -101,28 +101,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Field"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/btn_part"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Part"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/btn_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\@Header"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
             </TableRow>
         </TableLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="自定义Converter" />
+            android:text="自定义Converter、CallAdapter"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -135,7 +135,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="StringConverter"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
+                <Button
+                    android:id="@+id/btn_custom_call_adapter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CustomCallAdapter"
+                    android:textAllCaps="false"/>
             </TableRow>
 
         </TableLayout>
@@ -143,7 +149,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用GsonConverter返回Map、List" />
+            android:text="用GsonConverter返回Map、List"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -156,14 +162,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Test Map"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
 
                 <Button
                     android:id="@+id/btn_test_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Test List"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"/>
             </TableRow>
 
         </TableLayout>

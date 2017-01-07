@@ -24,6 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import tv.wanzi.demo.retrofit.R;
+import tv.wanzi.demo.retrofit.adapter.custom.CustomCallAdapterFactory;
 import tv.wanzi.demo.retrofit.api.MovieService;
 import tv.wanzi.demo.retrofit.converter.string.StringConverterFactory;
 import tv.wanzi.demo.retrofit.databinding.ActivityMainBinding;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .baseUrl(MovieService.BASE_URL)
                 .addConverterFactory(StringConverterFactory.create())//都支持的类型优先使用第一个
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(CustomCallAdapterFactory.create())
                 .build();
         mMovieService = retrofit.create(MovieService.class);
         mCall = mMovieService.getTopMovie(0, 2);
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.btnHeader.setOnClickListener(this);
 
         mBinding.btnStringConverter.setOnClickListener(this);
+        mBinding.btnCustomCallAdapter.setOnClickListener(this);
 
         mBinding.btnTestMap.setOnClickListener(this);
         mBinding.btnTestList.setOnClickListener(this);
@@ -112,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_string_converter:
                 stringConverter();
+                break;
+            case R.id.btn_custom_call_adapter:
+                customCallAdapter();
                 break;
             case R.id.btn_test_map:
                 testMap();
@@ -354,6 +360,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 LogUtils.i("failure", t);
             }
         });
+    }
+
+    private void customCallAdapter() {
+        final CustomCallAdapterFactory.CustomCall<String> customCall = mMovieService.testCustomCallAdapter(0, 2);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String result = customCall.getResult();
+                    LogUtils.i("CustomCallAdapter：" + result);
+                } catch (IOException e) {
+                    LogUtils.e(e);
+                }
+            }
+        }).start();
     }
 
     private void testMap() {
