@@ -16,6 +16,7 @@ import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -23,12 +24,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import tv.wanzi.demo.retrofit.BuildConfig;
 import tv.wanzi.demo.retrofit.R;
 import tv.wanzi.demo.retrofit.adapter.custom.CustomCallAdapterFactory;
 import tv.wanzi.demo.retrofit.api.MovieService;
 import tv.wanzi.demo.retrofit.converter.string.StringConverterFactory;
 import tv.wanzi.demo.retrofit.databinding.ActivityMainBinding;
 import tv.wanzi.demo.retrofit.entity.User;
+import tv.wanzi.demo.retrofit.interceptor.LoggingInterceptor;
 import tv.wanzi.demo.retrofit.utils.FileUtils;
 import tv.wanzi.demo.retrofit.utils.HttpUtils;
 import tv.wanzi.demo.retrofit.utils.LogUtils;
@@ -45,19 +48,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        mBinding.btnEnqueue.setOnClickListener(this);
-        mBinding.btnExecute.setOnClickListener(this);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(LoggingInterceptor.getInstance(LoggingInterceptor.LOG.DEFAULT))
+                .build();
+
 
         Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
                 .baseUrl(MovieService.BASE_URL)
                 .addConverterFactory(StringConverterFactory.create())//都支持的类型优先使用第一个
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(CustomCallAdapterFactory.create())
+                .addCallAdapterFactory(CustomCallAdapterFactory.create())//自定义请求适配器
+                .validateEagerly(BuildConfig.DEBUG)//是否在调用create(Class)时检测接口定义是否正确，而不是在调用方法才检测，适合在开发、测试时使用
                 .build();
+
         mMovieService = retrofit.create(MovieService.class);
         mCall = mMovieService.getTopMovie(0, 2);
         mCall.cancel();//取消请求
         //mCall执行方法只能调用一次,否则会抛IllegalStateException
+        mBinding.btnEnqueue.setOnClickListener(this);
+        mBinding.btnExecute.setOnClickListener(this);
 
         mBinding.btnHttp.setOnClickListener(this);
         mBinding.btnUrl.setOnClickListener(this);
