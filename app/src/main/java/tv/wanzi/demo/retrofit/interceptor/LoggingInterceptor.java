@@ -82,7 +82,6 @@ public class LoggingInterceptor implements Interceptor {
                 LogUtils.v(message);
             }
 
-
         }
         return originResponse;
     }

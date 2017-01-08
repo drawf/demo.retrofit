@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.btnTestMap.setOnClickListener(this);
         mBinding.btnTestList.setOnClickListener(this);
 
+        mBinding.btnLoggingInterceptor.setOnClickListener(this);
+
     }
 
     @Override
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 testMap();
                 break;
             case R.id.btn_test_list:
+                testList();
+                break;
+            case R.id.btn_logging_interceptor:
                 testList();
                 break;
         }
