@@ -56,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                .baseUrl(MovieService.BASE_URL)
-                .addConverterFactory(StringConverterFactory.create())//都支持的类型优先使用第一个
+                .client(client)//用于请求的HTTP client，设置OkHttpClient，有默认值。该方法是引用传递，对client的修改会影响后续请求。
+                .baseUrl(MovieService.BASE_URL)//设置baseUrl
+                .addConverterFactory(StringConverterFactory.create())//两种Converter都支持的类型优先使用第一个
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(CustomCallAdapterFactory.create())//自定义请求适配器
-                .validateEagerly(BuildConfig.DEBUG)//是否在调用create(Class)时检测接口定义是否正确，而不是在调用方法才检测，适合在开发、测试时使用
+                .addCallAdapterFactory(CustomCallAdapterFactory.create())//设置自定义请求适配器
+                .validateEagerly(BuildConfig.DEBUG)//是否在调用create(Class)时检测接口定义是否正确，而不是在调用方法才检测，在开发、测试时使用。
                 .build();
 
         mMovieService = retrofit.create(MovieService.class);
