@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(LoggingInterceptor.getInstance(LoggingInterceptor.LOG.DEFAULT))
+                .cache(FileUtils.getOkHttpCache())
                 .build();
 
 
@@ -87,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.btnTestList.setOnClickListener(this);
 
         mBinding.btnLoggingInterceptor.setOnClickListener(this);
+
+        mBinding.btnOkHttpCache.setOnClickListener(this);
 
     }
 
@@ -139,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 testList();
                 break;
             case R.id.btn_logging_interceptor:
+                testList();
+                break;
+            case R.id.btn_ok_http_cache:
                 testList();
                 break;
         }
