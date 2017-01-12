@@ -64,10 +64,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .validateEagerly(BuildConfig.DEBUG)//是否在调用create(Class)时检测接口定义是否正确，而不是在调用方法才检测，在开发、测试时使用。
                 .build();
 
-        mMovieService = retrofit.create(MovieService.class);
-        mCall = mMovieService.getTopMovie(0, 2);
-        mCall.cancel();//取消请求
-        //mCall执行方法只能调用一次,否则会抛IllegalStateException
+        mMovieService = retrofit.create(MovieService.class);//创建定义API接口的实现
+        mCall = mMovieService.getTopMovie(0, 2);//调用API得到Call对象
+
+        mCall.cancel();//取消请求，mCall执行方法只能调用一次,否则会抛IllegalStateException
+//        mCall.request();//得到Request对象
+//        mCall.clone();//克隆一个实例
+//        mCall.isCanceled();//是否取消了请求
+//        mCall.isExecuted();//是否已执行或已入队列
+//
+//        mCall.execute();//同步请求
+//        mCall.enqueue(Callback<T> callback);//异步请求
+
         mBinding.btnEnqueue.setOnClickListener(this);
         mBinding.btnExecute.setOnClickListener(this);
 

@@ -52,6 +52,7 @@ public interface MovieService {
     Call<JsonObject> testUrl(@Url String url);
 
     /*用于下载文件*/
+    /*表示响应体数据以流的形式返回，如果没有使用该注解，默认会把数据全部载入内存，之后是从内存中读取数据，所以数据很大时，适合用该标记*/
     @Streaming
     @GET
     Call<ResponseBody> testStreaming(@Url String url);
@@ -81,7 +82,7 @@ public interface MovieService {
     @POST("upload")
     Call<JsonObject> testPart(@Part("desc") String desc, @Part MultipartBody.Part file);
 
-    /*@Header，@Headers 不能被互相覆盖*/
+    /*@Header，@HeaderMap，@Headers 不能被互相覆盖*/
     @Headers({
             "token:test override",
             "User-Agent: Wanzi-Retrofit-Sample-App"
