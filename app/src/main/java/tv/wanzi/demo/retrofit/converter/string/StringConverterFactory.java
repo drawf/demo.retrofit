@@ -20,8 +20,8 @@ public class StringConverterFactory extends Converter.Factory {
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        if (type == String.class) {
-            return new StringResponseBodyConverter();
+        if (type == String.class) {//判断是否是要处理的类型
+            return new StringResponseBodyConverter();//这里创建具体的Converter
         }
         return null;//不能处理就返回null
     }

@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 LogUtils.i("异步请求：" + response.raw());//The raw response from the HTTP client. 打印发现该方法返回数据不全
                 LogUtils.i("异步请求：" + response.body());//The deserialized response body of a successful response.它就是你想要的数据
                 LogUtils.i("异步请求：" + response.errorBody());//The raw response body of an unsuccessful response.
+
             }
 
             @Override
