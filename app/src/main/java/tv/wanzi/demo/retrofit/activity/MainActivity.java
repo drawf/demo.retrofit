@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.File;
@@ -23,7 +25,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 import tv.wanzi.demo.retrofit.BuildConfig;
 import tv.wanzi.demo.retrofit.R;
 import tv.wanzi.demo.retrofit.adapter.custom.CustomCallAdapterFactory;
@@ -61,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addConverterFactory(StringConverterFactory.create())//两种Converter都支持的类型优先使用第一个
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(CustomCallAdapterFactory.create())//设置自定义请求适配器
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .validateEagerly(BuildConfig.DEBUG)//是否在调用create(Class)时检测接口定义是否正确，而不是在调用方法才检测，在开发、测试时使用。
                 .build();
 
@@ -98,6 +109,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.btnLoggingInterceptor.setOnClickListener(this);
 
         mBinding.btnOkHttpCache.setOnClickListener(this);
+
+        mBinding.btnRxJava.setOnClickListener(this);
+        mBinding.btnRxJavaScheduler.setOnClickListener(this);
+        mBinding.btnRxJavaSchedulerInNewThread.setOnClickListener(this);
+        mBinding.btnRxJavaZip.setOnClickListener(this);
+        mBinding.btnRxJavaMerge.setOnClickListener(this);
 
     }
 
@@ -154,6 +171,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_ok_http_cache:
                 testList();
+                break;
+            case R.id.btn_rx_java:
+                testRxJava();
+                break;
+            case R.id.btn_rx_java_scheduler:
+                testRxJavaScheduler();
+                break;
+            case R.id.btn_rx_java_scheduler_in_new_thread:
+                testRxJavaSchedulerInNewThread();
+                break;
+            case R.id.btn_rx_java_zip:
+                testRxJavaZip();
+                break;
+            case R.id.btn_rx_java_merge:
+                testRxJavaMerge();
                 break;
         }
         ToastUtils.show("快去看log");
@@ -443,5 +475,129 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void testRxJava() {
+        Observable<JsonObject> observable = mMovieService.testRxJava(0, 2);
 
+        observable
+                .subscribeOn(Schedulers.io())//指定subscribe()所发生的线程，即Observable.OnSubscribe被激活时所处的线程，或者叫事件产生的线程。
+                .observeOn(AndroidSchedulers.mainThread())//指定Subscriber所运行在的线程，或者叫事件消费的线程。
+                .subscribe(new Subscriber<JsonObject>() {
+                    @Override
+                    public void onCompleted() {
+                        LogUtils.i("Test RxJava:RxJava Request onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e(e);
+                    }
+
+                    @Override
+                    public void onNext(JsonObject jsonObject) {
+                        LogUtils.i("Test RxJava:" + jsonObject.toString());
+                    }
+                });
+    }
+
+    private void testRxJavaScheduler() {
+        Observable<JsonObject> observable = mMovieService.testRxJava(0, 2);
+
+        observable
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        LogUtils.i("Test RxJava Scheduler: doOnSubscribe thread name -> " + Thread.currentThread().getName());
+//                        Toast.makeText(MainActivity.this, "RxJava Request doOnSubscribe", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .subscribeOn(Schedulers.io())//指定subscribe()所发生的线程，即Observable.OnSubscribe被激活时所处的线程，或者叫事件产生的线程。
+                .observeOn(AndroidSchedulers.mainThread())//指定Subscriber所运行在的线程，或者叫事件消费的线程。
+                .subscribe(new Subscriber<JsonObject>() {
+                    @Override
+                    public void onStart() {//这里onStart()总是在执行subscribe()方法的线程中执行
+                        super.onStart();
+                        LogUtils.i("Test RxJava Scheduler: onStart thread name -> " + Thread.currentThread().getName());
+
+//                        Toast.makeText(MainActivity.this, "RxJava Request onStart", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        LogUtils.i("Test RxJava Scheduler: onCompleted thread name -> " + Thread.currentThread().getName());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e(e);
+                    }
+
+                    @Override
+                    public void onNext(JsonObject jsonObject) {
+//                        LogUtils.i("Test RxJava Scheduler:" + jsonObject.toString());
+                    }
+                });
+
+
+    }
+
+    private void testRxJavaSchedulerInNewThread() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                LogUtils.i("Test RxJava Scheduler: request thread name -> " + Thread.currentThread().getName());
+                //将请求代码发到这里，onStart 执行所在线程就不是主线程了，因为onStart()总是在执行subscribe()方法的线程中执行，不能单独指定线程
+                testRxJavaScheduler();
+            }
+        }.start();
+    }
+
+    private void testRxJavaZip() {
+        Observable<JsonObject> observable = mMovieService.testRxJava(0, 2);
+        Observable<JsonArray> observable1 = mMovieService.testRxJava1("https://movie.douban.com/j/cinemas/?city_id=108288&limit=5", 0, 2);
+
+        //zip方法把多个Observable组合成新的Observable，新的Observable对应的数据由call方法决定，它可以对数据源做二次操作
+        Observable.zip(observable, observable1, new Func2<JsonObject, JsonArray, JsonArray>() {
+            @Override
+            public JsonArray call(JsonObject jsonObject, JsonArray jsonElements) {
+                JsonArray array = new JsonArray();
+                array.add(jsonObject);
+                array.add("=================");
+                array.add(jsonElements);
+                return array;
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<JsonArray>() {
+                    @Override
+                    public void call(JsonArray jsonElements) {
+                        LogUtils.i("Test RxJava zip:" + jsonElements.toString());
+                    }
+                });
+
+    }
+
+    //merge方法可以合并多个数据源，数据也会被依次发射出来
+    private void testRxJavaMerge() {
+        Observable<JsonObject> observable = mMovieService.testRxJava(0, 2);
+        Observable<JsonArray> observable1 = mMovieService.testRxJava1("https://movie.douban.com/j/cinemas/?city_id=108288&limit=5", 0, 2);
+
+        Observable.merge(observable, observable1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<JsonElement>() {
+                    @Override
+                    public void call(JsonElement jsonElement) {
+                        if (jsonElement instanceof JsonObject) {
+                            LogUtils.i("Test RxJava Merge:observable result -> " + jsonElement.toString());
+                        } else if (jsonElement instanceof JsonArray) {
+                            LogUtils.i("Test RxJava Merge:observable1 result -> " + jsonElement.toString());
+                        } else {
+                            LogUtils.e(new RuntimeException("数据异常"));
+                        }
+                    }
+                });
+
+    }
 }

@@ -1,5 +1,6 @@
 package tv.wanzi.demo.retrofit.api;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
+import rx.Observable;
 import tv.wanzi.demo.retrofit.adapter.custom.CustomCallAdapterFactory;
 import tv.wanzi.demo.retrofit.entity.User;
 
@@ -102,4 +104,10 @@ public interface MovieService {
     @GET
     Call<List<Map<String, Object>>> testList(@Url String url, @Query("start") int start, @Query("count") int count);
 
+    /*RxJava Module*/
+    @GET("top250")
+    Observable<JsonObject> testRxJava(@Query("start") int start, @Query("count") int count);
+
+    @GET
+    Observable<JsonArray> testRxJava1(@Url String url, @Query("start") int start, @Query("count") int count);
 }
