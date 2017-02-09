@@ -42,9 +42,11 @@ public class LoggingInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
+        /*得到原来的Request实例后就可以 重写请求*/
         Request originRequest = chain.request();
 
         long t1 = System.nanoTime();
+        /*得到原来的Response实例后就可以 重写响应*/
         Response originResponse = chain.proceed(originRequest);
         long t2 = System.nanoTime();
 
@@ -62,11 +64,11 @@ public class LoggingInterceptor implements Interceptor {
                         SEPARATOR, requestBody2String(originRequest.body()),
                         SEPARATOR, time,
                         SEPARATOR, originResponse.code(),
+                        /*这里需要注意的是originResponse.body()一旦消费掉后，响应体就会为空，解决方法见responseBody2String源码*/
                         SEPARATOR, responseBody2String(originResponse.body()));
                 LogUtils.v(message);
-            }
 
-            if (eLog == LOG.ALL) {
+            } else if (eLog == LOG.ALL) {
                 String format = "method%s%s\nurl%s%s\nheaders%s%s\nbody%s%s\ntime%s%s\n" +
                         "response code%s%s\nresponse headers%s%s\nresponse body%s%s\n";
 
@@ -114,7 +116,7 @@ public class LoggingInterceptor implements Interceptor {
 
         BufferedSource source = responseBody.source();
         source.request(Long.MAX_VALUE); // Buffer the entire body.
-        Buffer buffer = source.buffer().clone();
+        Buffer buffer = source.buffer().clone();//clone出响应体内容，这样就不会消费掉了
 
         Charset charset = Charset.forName("UTF-8");
         MediaType contentType = responseBody.contentType();
