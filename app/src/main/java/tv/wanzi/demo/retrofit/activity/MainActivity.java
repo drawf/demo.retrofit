@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(LoggingInterceptor.getInstance(LoggingInterceptor.LOG.DEFAULT))
+                .addInterceptor(LoggingInterceptor.newInstance(LoggingInterceptor.LOG.DEFAULT))
                 .cache(FileUtils.getOkHttpCache())
                 .build();
 

@@ -28,11 +28,11 @@ public class LoggingInterceptor implements Interceptor {
         NONE, ALL, DEFAULT
     }
 
-    public static LoggingInterceptor getInstance() {
+    public static LoggingInterceptor newInstance() {
         return new LoggingInterceptor(LOG.DEFAULT);
     }
 
-    public static LoggingInterceptor getInstance(LOG eLog) {
+    public static LoggingInterceptor newInstance(LOG eLog) {
         return new LoggingInterceptor(eLog);
     }
 
