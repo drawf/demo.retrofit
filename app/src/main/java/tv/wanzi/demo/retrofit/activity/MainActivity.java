@@ -477,23 +477,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void testRxJava() {
         Observable<JsonObject> observable = mMovieService.testRxJava(0, 2);
-
         observable
-                .subscribeOn(Schedulers.io())//指定subscribe()所发生的线程，即Observable.OnSubscribe被激活时所处的线程，或者叫事件产生的线程。
-                .observeOn(AndroidSchedulers.mainThread())//指定Subscriber所运行在的线程，或者叫事件消费的线程。
+                //指定subscribe()所发生的线程，即Observable.OnSubscribe被激活时所处的线程，或者叫事件产生的线程。
+                .subscribeOn(Schedulers.io())
+                //指定Subscriber所运行在的线程，或者叫事件消费的线程。
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<JsonObject>() {
                     @Override
-                    public void onCompleted() {
+                    public void onStart() {//事件还未发送之前被调用，做一些准备工作
+                        super.onStart();
+                        LogUtils.i("Test RxJava:RxJava Request onStart");
+                    }
+
+                    @Override
+                    public void onCompleted() {//事件队列完结
                         LogUtils.i("Test RxJava:RxJava Request onCompleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtils.e(e);
-                    }
+                    }//事件队列异常
 
                     @Override
-                    public void onNext(JsonObject jsonObject) {
+                    public void onNext(JsonObject jsonObject) {//处理返回数据
                         LogUtils.i("Test RxJava:" + jsonObject.toString());
                     }
                 });
